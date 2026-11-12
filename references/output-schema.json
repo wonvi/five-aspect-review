@@ -1,0 +1,158 @@
+{
+  "type": "object",
+  "required": [
+    "scenario",
+    "summary",
+    "cautions",
+    "follow_up",
+    "problems",
+    "outer",
+    "dimensions",
+    "critical_candidates",
+    "medical_in_dialogue",
+    "material_medical_skipped",
+    "energy_topic"
+  ],
+  "properties": {
+    "scenario": {
+      "type": "string",
+      "enum": [
+        "project",
+        "team",
+        "product",
+        "personal"
+      ]
+    },
+    "summary": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "核心要点，必须 3–5 条，每条非空"
+    },
+    "cautions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "材料里自相矛盾、缺失、需要核实的地方"
+    },
+    "follow_up": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "只针对缺失维的追问；所有条目合计最多两句（按句号 / 问号 / 叹号计），每条非空；无缺失为空数组"
+    },
+    "problems": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "对照阈值表越线的指标，一句一条"
+    },
+    "outer": {
+      "type": "string",
+      "enum": [
+        "up",
+        "flat",
+        "down"
+      ]
+    },
+    "dimensions": {
+      "type": "array",
+      "description": "正好 5 项，五个 key 各出现一次",
+      "items": {
+        "type": "object",
+        "required": [
+          "key",
+          "reason",
+          "indicators"
+        ],
+        "properties": {
+          "key": {
+            "type": "string",
+            "enum": [
+              "expand",
+              "grow",
+              "earn",
+              "govern",
+              "foundation"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "description": "每维一句话理由，非空；缺失时写缺什么"
+          },
+          "indicators": {
+            "type": "array",
+            "description": "参与落分的指标；没有证据为空数组",
+            "items": {
+              "type": "object",
+              "required": [
+                "name",
+                "value",
+                "score",
+                "source"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "指标名，非空"
+                },
+                "value": {
+                  "type": "string",
+                  "description": "证据原话，非空字符串，数字也写成带单位的字符串"
+                },
+                "score": {
+                  "type": "integer",
+                  "enum": [
+                    1,
+                    3,
+                    4,
+                    5,
+                    6,
+                    8,
+                    10
+                  ]
+                },
+                "source": {
+                  "type": "string",
+                  "enum": [
+                    "material",
+                    "spoken"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "critical_candidates": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "expand",
+          "grow",
+          "earn",
+          "govern",
+          "foundation"
+        ]
+      }
+    },
+    "medical_in_dialogue": {
+      "type": "boolean",
+      "description": "本轮用户消息里出现医疗内容"
+    },
+    "material_medical_skipped": {
+      "type": "boolean",
+      "description": "材料里有医疗内容段且已整段跳过"
+    },
+    "energy_topic": {
+      "type": "boolean",
+      "description": "涉及时间与精力分配"
+    }
+  }
+}
