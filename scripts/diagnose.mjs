@@ -5,6 +5,7 @@
 
 import { readFileSync } from "node:fs";
 import { derive } from "./lib/engine.mjs";
+import { feedbackLine } from "./lib/feedback.mjs";
 import { parseExtractionJson } from "./lib/json.mjs";
 import { text } from "./lib/render.mjs";
 
@@ -40,4 +41,4 @@ if (result.type === "error") {
   process.exit(1);
 }
 
-process.stdout.write(`${text(result)}\n`);
+process.stdout.write(`${text(result)}\n\n${feedbackLine(result)}\n`);
