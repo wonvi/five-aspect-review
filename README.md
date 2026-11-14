@@ -12,6 +12,18 @@
 - **豆包工作**：在「技能」里选「上传技能」，选解压后的 `five-aspect-review` 文件夹。
 - **DeepSeek Harness**：解压到 `~/.agents/skills/five-aspect-review/`，然后重启。
 
+### 让 agent 自己装
+
+如果你用的 agent 能执行命令（比如 WorkBuddy、Claude Code、Codex），可以把下面这段原样发给它：
+
+```text
+请帮我安装「五面盘点」技能：
+1. 下载 https://github.com/wonvi/five-aspect-review/releases/latest/download/five-aspect-review.zip
+2. 解压到你的技能目录，解压后应是 <技能目录>/five-aspect-review/SKILL.md。不知道技能目录在哪，就先问我。
+3. 运行 node --version 确认 Node 是 18 或更高；不够就告诉我，不要替我升级。
+4. 只解压，不要运行包里的脚本。装好后告诉我装到了哪里，以及要不要重启才能生效。
+```
+
 ## 用法
 
 装好后直接说「帮我盘一盘这件事」，再附上情况或材料。技能会先整理五个方面的依据，再用自带脚本算出结论和先后顺序。
