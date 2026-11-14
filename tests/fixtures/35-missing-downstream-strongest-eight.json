@@ -1,0 +1,77 @@
+{
+  "expected": "【摘要】\n要点一\n要点二\n要点三\n【注意事项】\n无\n—— 以上为通用分析 ——\n【一句话诊断】\n失衡：最强是开拓，最弱是做大\n【五维状态】\n开拓 · 8 分 · 材料 · 有证据\n　　expand指标：expand 的原话（材料）→ 8 分\n做大 · 4 分 · 材料 · 有证据\n　　grow指标：grow 的原话（材料）→ 4 分\n落地 · 未打分 · 缺落地证据\n立规矩 · 5 分 · 材料 · 有证据\n　　govern指标：govern 的原话（材料）→ 5 分\n家底 · 5 分 · 材料 · 有证据\n　　foundation指标：foundation 的原话（材料）→ 5 分\n【可能存在的问题】\n无\n【风险信号】\n正在压谁：待补问\n【风险应对】\n定「同时最多开几条」；新线上马前过一道检查\n【优化提升】\n先把要推的东西做出差异，有东西可说才推得动 外部：找渠道方或有受众的人合作首发；买一次投放测试\n【重点关注】\n待补问\n【行动优先级】\n1. 先补做大，做法见「优化提升」\n2. 再管住开拓，做法见「风险应对」\n3. 探索出来的东西，挑一个推出去验证\n【还想问你】\n什么已经落地、稳定产出了？\n【哪条判断不对？】\n哪条判断不对，直接告诉我，我按你说的改。",
+  "feedback_r": "imbalanced.expand.grow",
+  "input": {
+    "cautions": [],
+    "critical_candidates": [],
+    "dimensions": [
+      {
+        "indicators": [
+          {
+            "name": "expand指标",
+            "score": 8,
+            "source": "material",
+            "value": "expand 的原话"
+          }
+        ],
+        "key": "expand",
+        "reason": "有证据"
+      },
+      {
+        "indicators": [
+          {
+            "name": "grow指标",
+            "score": 4,
+            "source": "material",
+            "value": "grow 的原话"
+          }
+        ],
+        "key": "grow",
+        "reason": "有证据"
+      },
+      {
+        "indicators": [],
+        "key": "earn",
+        "reason": "缺落地证据"
+      },
+      {
+        "indicators": [
+          {
+            "name": "govern指标",
+            "score": 5,
+            "source": "material",
+            "value": "govern 的原话"
+          }
+        ],
+        "key": "govern",
+        "reason": "有证据"
+      },
+      {
+        "indicators": [
+          {
+            "name": "foundation指标",
+            "score": 5,
+            "source": "material",
+            "value": "foundation 的原话"
+          }
+        ],
+        "key": "foundation",
+        "reason": "有证据"
+      }
+    ],
+    "energy_topic": false,
+    "follow_up": [
+      "什么已经落地、稳定产出了？"
+    ],
+    "material_medical_skipped": false,
+    "medical_in_dialogue": false,
+    "outer": "flat",
+    "problems": [],
+    "scenario": "project",
+    "summary": [
+      "要点一",
+      "要点二",
+      "要点三"
+    ]
+  }
+}

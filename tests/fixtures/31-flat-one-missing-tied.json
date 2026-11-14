@@ -1,0 +1,77 @@
+{
+  "expected": "【摘要】\n要点一\n要点二\n要点三\n【注意事项】\n无\n—— 以上为通用分析 ——\n【一句话诊断】\n均衡：已评估的四个方面差不多，看不出相对强弱\n【五维状态】\n开拓 · 5 分 · 材料 · 有证据\n　　expand指标：expand 的原话（材料）→ 5 分\n做大 · 5 分 · 材料 · 有证据\n　　grow指标：grow 的原话（材料）→ 5 分\n落地 · 5 分 · 材料 · 有证据\n　　earn指标：earn 的原话（材料）→ 5 分\n立规矩 · 5 分 · 材料 · 有证据\n　　govern指标：govern 的原话（材料）→ 5 分\n家底 · 未打分 · 缺家底证据\n【可能存在的问题】\n无\n【风险信号】\n无\n【风险应对】\n未判定\n【优化提升】\n未判定\n【重点关注】\n未判定\n【行动优先级】\n未判定\n【还想问你】\n你的家底够不够撑？\n【哪条判断不对？】\n哪条判断不对，直接告诉我，我按你说的改。",
+  "feedback_r": "balanced",
+  "input": {
+    "cautions": [],
+    "critical_candidates": [],
+    "dimensions": [
+      {
+        "indicators": [
+          {
+            "name": "expand指标",
+            "score": 5,
+            "source": "material",
+            "value": "expand 的原话"
+          }
+        ],
+        "key": "expand",
+        "reason": "有证据"
+      },
+      {
+        "indicators": [
+          {
+            "name": "grow指标",
+            "score": 5,
+            "source": "material",
+            "value": "grow 的原话"
+          }
+        ],
+        "key": "grow",
+        "reason": "有证据"
+      },
+      {
+        "indicators": [
+          {
+            "name": "earn指标",
+            "score": 5,
+            "source": "material",
+            "value": "earn 的原话"
+          }
+        ],
+        "key": "earn",
+        "reason": "有证据"
+      },
+      {
+        "indicators": [
+          {
+            "name": "govern指标",
+            "score": 5,
+            "source": "material",
+            "value": "govern 的原话"
+          }
+        ],
+        "key": "govern",
+        "reason": "有证据"
+      },
+      {
+        "indicators": [],
+        "key": "foundation",
+        "reason": "缺家底证据"
+      }
+    ],
+    "energy_topic": false,
+    "follow_up": [
+      "你的家底够不够撑？"
+    ],
+    "material_medical_skipped": false,
+    "medical_in_dialogue": false,
+    "outer": "flat",
+    "problems": [],
+    "scenario": "project",
+    "summary": [
+      "要点一",
+      "要点二",
+      "要点三"
+    ]
+  }
+}

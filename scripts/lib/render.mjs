@@ -2,7 +2,7 @@
 // 只出大众用词；顺序、标点与参考实现逐字一致。
 
 import { correctedScores } from "./aggregate.mjs";
-import { KEYS, name } from "./ring.mjs";
+import { KEYS, name, skipDownstream } from "./ring.mjs";
 
 const STANCE_LINES = {
   restrain: "外面机会多、自己也冲得猛，先收一下别扩",
@@ -36,8 +36,8 @@ function renderFull(d) {
     block("五维状态", dimLines(d)),
     block("可能存在的问题", listLines(d.problems)),
     block("风险信号", riskLines(d)),
-    block("风险应对", [d.risk_response]),
-    block("优化提升", [d.improvement]),
+    block("风险应对", [advised(d.risk_response)]),
+    block("优化提升", [advised(d.improvement)]),
     block("重点关注", [focusLine(d)]),
     block("行动优先级", priorityLines(d)),
     followUpBlock(d),
@@ -64,6 +64,9 @@ function renderInsufficient(d) {
 function block(title, lines) {
   return `【${title}】\n${lines.filter((line) => line !== null).join("\n")}`;
 }
+function advised(value) {
+  return value === null || value === undefined ? UNDECIDED : value;
+}
 function summaryLines(d) {
   const base = wrap(d.summary);
   return typeof d.summary_notice === "string" && d.summary_notice !== ""
@@ -77,7 +80,24 @@ function listLines(value) {
 function oneLiner(d) {
   if (d.status === "insufficient") return `信息不足，缺${d.missing.map(name).join("、")}`;
   const kind = d.status === "imbalanced" ? "失衡" : "均衡";
-  return `${kind}：最强是${name(d.strongest)}，最弱是${name(d.weakest)}`;
+  const scores = d.dimensions.map((dim) => dim.score).filter(Number.isInteger);
+
+  if (Math.max(...scores) - Math.min(...scores) <= 1) {
+    return `${kind}：${scopeLabel(scores)}${flatQualifier(d.status, scores)}，看不出相对强弱`;
+  }
+
+  return d.status === "balanced"
+    ? `均衡：相对强的是${name(d.strongest)}，相对弱的是${name(d.weakest)}`
+    : `失衡：最强是${name(d.strongest)}，最弱是${name(d.weakest)}`;
+}
+function scopeLabel(scores) {
+  return scores.length === 5 ? "五个方面" : "已评估的四个方面";
+}
+// 分差 ≤ 1 且失衡时只有两种实际情形：全在 ≥ 8 一侧，或最低 ≤ 3。
+// 3 / 4 混合同属偏弱一侧（4 分是「比偏弱好、没到中性」），写「都偏弱」。
+function flatQualifier(status, scores) {
+  if (status === "balanced") return "差不多";
+  return Math.min(...scores) >= 8 ? "都偏强" : "都偏弱";
 }
 function stanceBlock(d) {
   const line = STANCE_LINES[d.stance];
@@ -109,17 +129,25 @@ function sourceLabel(source) {
   return source === "material" ? "材料" : "口述";
 }
 function riskLines(d) {
-  const signals = d.risk_signals ?? {};
-  const pressing = signals.pressing;
-  const pressLine = pressing && typeof pressing.from === "string" &&
-      typeof pressing.to === "string"
-    ? `${name(pressing.from)}正在压${name(pressing.to)}`
-    : PENDING_PRESS;
-  const critical = wrap(signals.critical);
-  const critLine = critical.length === 0
-    ? null
-    : `${critical.map(name).join("、")}有带方向的变化，留意`;
-  return [pressLine, critLine].filter((line) => line !== null);
+  const lines = [pressLine(d), criticalLine(wrap(d.risk_signals?.critical))]
+    .filter((line) => line !== null);
+  return lines.length === 0 ? ["无"] : lines;
+}
+function pressLine(d) {
+  const pressing = d.risk_signals?.pressing;
+  if (pressing && typeof pressing.from === "string" && typeof pressing.to === "string") {
+    return `${name(pressing.from)}正在压${name(pressing.to)}`;
+  }
+  // 不点名强弱时不写「待补问」：没有强弱，就谈不上压谁。
+  if (d.strongest === null) return null;
+
+  // 「正在压」要求最强 ≥ 8；最强不到 8 时缺的隔位下游维补出任何分都压不动。
+  const byKey = Object.fromEntries((d.dimensions ?? []).map((dim) => [dim.key, dim]));
+  if (!atLeast(byKey, d.strongest, 8)) return null;
+  return Number.isInteger(byKey[skipDownstream(d.strongest)]?.score) ? null : PENDING_PRESS;
+}
+function criticalLine(keys) {
+  return keys.length === 0 ? null : `${keys.map(name).join("、")}有带方向的变化，留意`;
 }
 function focusLine(d) {
   const pair = d.focus_pair;
@@ -128,13 +156,19 @@ function focusLine(d) {
     const byKey = Object.fromEntries((d.dimensions ?? []).map((dim) => [dim.key, dim]));
     return `${name(pair.a)}（${byKey[pair.a]?.score} 分）和${name(pair.b)}（${byKey[pair.b]?.score} 分）差 ${pair.gap} 分`;
   }
-  if (pair === null && d.risk_signals && d.risk_signals.pressing === null) {
-    return PENDING_FOCUS;
-  }
-  return NO_FOCUS;
+  if (d.strongest === null) return UNDECIDED;
+
+  // 「最紧张的一对」要求分差 ≥5；最强 ≥6 时缺维补到 1 分就可能触发，才追问。
+  const byKey = Object.fromEntries((d.dimensions ?? []).map((dim) => [dim.key, dim]));
+  if (Number.isInteger(byKey[skipDownstream(d.strongest)]?.score)) return NO_FOCUS;
+  return atLeast(byKey, d.strongest, 6) ? PENDING_FOCUS : NO_FOCUS;
+}
+function atLeast(byKey, key, min) {
+  const score = byKey[key]?.score;
+  return Number.isInteger(score) && score >= min;
 }
 function priorityLines(d) {
-  if (d.priorities === null) return [];
+  if (d.priorities === null) return [UNDECIDED];
   const order = d.stance === "restrain" ? ["guard", "fill", "next"] : ["fill", "guard", "next"];
   return order.map((key) => [key, d.priorities[key]])
     .filter(([, line]) => line != null)

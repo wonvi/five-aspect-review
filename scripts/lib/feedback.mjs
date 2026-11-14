@@ -22,6 +22,10 @@ export function conclusionCode(result) {
   }
 
   const { strongest, weakest } = diagnosis;
+
+  // 分差 ≤ 1：平台不点名强弱，只带裸状态值。
+  if (strongest === null && weakest === null) return diagnosis.status;
+
   if (!validKey(strongest) || !validKey(weakest) || strongest === weakest) {
     throw new Error(`最强/最弱维非法：${strongest} / ${weakest}`);
   }

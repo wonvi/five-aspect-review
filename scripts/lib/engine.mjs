@@ -40,14 +40,17 @@ function buildOutput(input) {
     problems: status === "insufficient" ? [] : input.problems,
   };
 
-  if (status === "insufficient") return { ...base, ...insufficientFields() };
+  if (status === "insufficient") return { ...base, ...unrankedFields([]) };
+
+  const critical = calcCritical(input.critical_candidates, input.by_key);
+  if (flatSpread(input.dimensions)) return { ...base, ...unrankedFields(critical) };
 
   const strongest = pickStrongest(input.dimensions, input.by_key);
   const weakest = pickWeakest(input.dimensions, strongest, input.by_key);
   const stance = calcStance(status, input.outer, input.dimensions);
   const levers = calcLevers(weakest, strongest, input.by_key);
-  const addenda = calcAddenda(weakest, strongest, stance, input.by_key);
-  const riskSignals = calcRisk(strongest, input.by_key, input.critical_candidates);
+  const pressing = calcPressing(strongest, input.by_key);
+  const addenda = calcAddenda(weakest, strongest, stance, pressing);
   const focusPair = calcFocus(strongest, input.by_key);
   const { improvement, riskResponse, priorities } = calcTexts(
     weakest, strongest, levers, addenda, stance, status,
@@ -60,26 +63,32 @@ function buildOutput(input) {
     stance,
     levers,
     addenda,
-    risk_signals: riskSignals,
+    risk_signals: { pressing, critical },
     focus_pair: focusPair,
     priorities,
     risk_response: riskResponse,
     improvement,
   };
 }
-function insufficientFields() {
+// 分差 ≤ 1 时并列规则选出的强弱没有证据，整组派生字段留空；
+// 带方向的变化信号（critical）不依赖强弱，照常保留。
+function unrankedFields(critical) {
   return {
     strongest: null,
     weakest: null,
     stance: null,
     levers: null,
     addenda: { zhu: null, hao: null },
-    risk_signals: { pressing: null, critical: [] },
+    risk_signals: { pressing: null, critical },
     focus_pair: null,
     priorities: null,
     risk_response: null,
     improvement: null,
   };
+}
+function flatSpread(dims) {
+  const scores = scored(dims).map((d) => d.score);
+  return Math.max(...scores) - Math.min(...scores) <= 1;
 }
 function missingKeys(dims) {
   return dims.filter((d) => d.score === null).map((d) => d.key).sort((a, b) => rix(a) - rix(b));
@@ -117,9 +126,12 @@ function breakTies(cands, which, strongest, byKey) {
   return [...tied].sort((a, b) => rix(a.key) - rix(b.key))[0].key;
 }
 
-// 隔位下游分更低优先；缺失不参与本步
+// 隔位下游分更低优先；缺失不参与本步。
+// 只在最强候选 ≥ 8 时启用；分数不高时没有「压」的证据，直接走环序。
 function skipTie(cands, which, strongest, byKey) {
   if (which === "strongest") {
+    if (cands[0].score < 8) return cands;
+
     const present = [];
     for (const c of cands) {
       const s = scoreOf(byKey, skipDownstream(c.key));
@@ -129,6 +141,9 @@ function skipTie(cands, which, strongest, byKey) {
     const min = Math.min(...present.map(([, s]) => s));
     return present.filter(([, s]) => s === min).map(([c]) => c);
   }
+
+  const strongestScore = scoreOf(byKey, strongest);
+  if (!Number.isInteger(strongestScore) || strongestScore < 8) return cands;
 
   const pressed = skipDownstream(strongest);
   const preferred = cands.filter((c) => c.key === pressed);
@@ -156,20 +171,28 @@ function calcLevers(weakest, strongest, byKey) {
     guard: scoreOf(byKey, skipUpstream(strongest)) === MISSING ? "xie" : "ke",
   };
 }
-function calcAddenda(weakest, strongest, stance, byKey) {
+function calcAddenda(weakest, strongest, stance, pressing) {
   return {
     zhu: stance === "shrink" ? null : zhu(weakest),
-    hao: scoreOf(byKey, skipDownstream(strongest)) === MISSING ? null : hao(strongest),
+    hao: pressing === null ? null : hao(strongest),
   };
 }
-function calcRisk(strongest, byKey, candidates) {
+// 「正在压」要有证据：最强 ≥ 8 且隔位下游有分且 ≤ 5。
+function calcPressing(strongest, byKey) {
   const down = skipDownstream(strongest);
-  const pressing = scoreOf(byKey, down) === MISSING ? null : { from: strongest, to: down };
-  const critical = [...new Set(candidates.filter((key) => {
+  const score = scoreOf(byKey, strongest);
+  const downScore = scoreOf(byKey, down);
+
+  return Number.isInteger(score) && score >= 8 &&
+      Number.isInteger(downScore) && downScore <= 5
+    ? { from: strongest, to: down }
+    : null;
+}
+function calcCritical(candidates, byKey) {
+  return [...new Set(candidates.filter((key) => {
     const dim = byKey[key];
     return isMap(dim) && CRITICAL_SCORES.includes(dim.score);
   }))].sort((a, b) => rix(a) - rix(b));
-  return { pressing, critical };
 }
 function calcFocus(strongest, byKey) {
   const down = skipDownstream(strongest);

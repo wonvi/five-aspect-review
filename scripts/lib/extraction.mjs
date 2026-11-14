@@ -83,15 +83,28 @@ function fillMissingFollowUp(raw) {
 
 // 模型给的维度 score/source 丢弃，由指标聚合写回
 function normalizeDim(d) {
-  const [score, source] = dimension(d.indicators);
+  const indicators = dedupeIndicators(d.indicators);
+  const [score, source] = dimension(indicators);
   return {
     key: d.key,
     score,
     source,
     reason: d.reason,
-    indicators: d.indicators.map((ind) =>
+    indicators: indicators.map((ind) =>
       take(ind, ["name", "value", "score", "source"])),
   };
+}
+
+// 规则要求同一维同名指标最多列一次；模型多列时只留第一条，
+// 以免第二条被当成「同向第二条」绕过单指标修正。按去空白后的名字比较。
+function dedupeIndicators(list) {
+  const seen = new Set();
+  return list.filter((ind) => {
+    const name = trim(ind.name);
+    if (seen.has(name)) return false;
+    seen.add(name);
+    return true;
+  });
 }
 
 function take(obj, keys) {

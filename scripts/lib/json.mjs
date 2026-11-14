@@ -64,6 +64,12 @@ function protectScores(text) {
   return out;
 }
 
+// 输入文件可能带 UTF-8 字节序标记（Windows 编辑器常见）；JSON.parse 不认，先去掉。
+// 只处理开头的 U+FEFF，UTF-16 等其它编码不在支持范围。
+function stripBom(text) {
+  return text.startsWith("\uFEFF") ? text.slice(1) : text;
+}
+
 export function parseExtractionJson(text) {
-  return JSON.parse(protectScores(text));
+  return JSON.parse(protectScores(stripBom(text)));
 }
