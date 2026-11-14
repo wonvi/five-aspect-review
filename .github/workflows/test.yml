@@ -1,0 +1,23 @@
+name: test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  fixtures:
+    name: 样例回归（Node ${{ matrix.node }}）
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: ["18", "22"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - run: node --test tests/fixtures.test.mjs
