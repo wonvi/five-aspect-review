@@ -3,13 +3,15 @@
 
 export function dimension(indicators) {
   if (indicators.length === 0) return [null, null];
+  return [median(correctedScores(indicators)), lowestSource(indicators)];
+}
 
+// 每条的参与打分分（修正后），与指标同序；维度聚合与渲染明细共用这一处规则
+export function correctedScores(indicators) {
   const rawScores = indicators.map((ind) => ind.score);
-  const corrected = indicators.map((ind, i) =>
+  return indicators.map((ind, i) =>
     protect(ind.score, ind.source, rawScores, i),
   );
-
-  return [median(corrected), lowestSource(indicators)];
 }
 
 // 验证前：单指标越线最多落到 3/8；1/10 需同向第二指标或口述

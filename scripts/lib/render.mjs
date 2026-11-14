@@ -1,6 +1,7 @@
 // 把派生结果渲染成纯文字，移植自平台的渲染模块。
 // 只出大众用词；顺序、标点与参考实现逐字一致。
 
+import { correctedScores } from "./aggregate.mjs";
 import { KEYS, name } from "./ring.mjs";
 
 const STANCE_LINES = {
@@ -84,12 +85,24 @@ function stanceBlock(d) {
 }
 function dimLines(d) {
   const byKey = Object.fromEntries(d.dimensions.map((dim) => [dim.key, dim]));
-  return KEYS.map((key) => {
-    const dim = byKey[key];
-    const dimName = name(key);
-    return Number.isInteger(dim.score)
-      ? `${dimName} · ${dim.score} 分 · ${sourceLabel(dim.source)} · ${dim.reason}`
-      : `${dimName} · 未打分 · ${dim.reason}`;
+  return KEYS.flatMap((key) => dimensionLines(name(key), byKey[key]));
+}
+function dimensionLines(dimName, dim) {
+  if (!Number.isInteger(dim.score)) return [`${dimName} · 未打分 · ${dim.reason}`];
+  return [
+    `${dimName} · ${dim.score} 分 · ${sourceLabel(dim.source)} · ${dim.reason}`,
+    ...indicatorLines(dim.indicators),
+  ];
+}
+// 每条指标一行，按输入顺序；修正后分直接取聚合规则，渲染不另写判断
+function indicatorLines(indicators) {
+  if (!Array.isArray(indicators)) return [];
+  const corrected = correctedScores(indicators);
+  return indicators.map((ind, i) => {
+    const head = `　　${ind.name}：${ind.value}（${sourceLabel(ind.source)}）→ ${ind.score} 分`;
+    return corrected[i] === ind.score
+      ? head
+      : `${head}，没有第二条同方向的证据，按 ${corrected[i]} 分算`;
   });
 }
 function sourceLabel(source) {
@@ -123,9 +136,16 @@ function focusLine(d) {
 function priorityLines(d) {
   if (d.priorities === null) return [];
   const order = d.stance === "restrain" ? ["guard", "fill", "next"] : ["fill", "guard", "next"];
-  return order.map((key) => d.priorities[key])
-    .filter((line) => line !== null)
-    .map((line, i) => `${i + 1}. ${line}`);
+  return order.map((key) => [key, d.priorities[key]])
+    .filter(([, line]) => line != null)
+    .map(([key, line], i) => `${i + 1}. ${priorityLine(key, line, i, d)}`);
+}
+// 指向「优化提升」「风险应对」的两条只留一句引用，避免把上面两节原文再抄一遍；next 原样保留
+function priorityLine(key, line, index, d) {
+  const prefix = index === 0 ? "先" : "再";
+  if (key === "fill") return `${prefix}补${name(d.weakest)}，做法见「优化提升」`;
+  if (key === "guard") return `${prefix}管住${name(d.strongest)}，做法见「风险应对」`;
+  return line;
 }
 function followUpBlock(d) {
   const list = d.follow_up;
