@@ -4,8 +4,8 @@ description: 五面盘点：从开拓、做大、落地、立规矩、家底五�
 license: 版权所有 © 2026 Wonvi。允许个人免费安装和使用；未经书面许可不得修改后再发布、转售或收进其他产品。详见 LICENSE.txt
 metadata:
   author: Wonvi
-  homepage: https://wonvi.iedoub.com
-  version: 1.2.2
+  homepage: https://wonvi.fun
+  version: 1.2.3
 ---
 
 # 五面盘点

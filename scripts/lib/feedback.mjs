@@ -4,7 +4,7 @@
 import { validKey } from "./ring.mjs";
 import { VERSION } from "./version.mjs";
 
-export const FEEDBACK_BASE_URL = "https://wonvi.iedoub.com/f/five-aspect";
+export const FEEDBACK_BASE_URL = "https://wonvi.fun/f/five-aspect";
 
 // 与反馈页的 @balance_statuses 一致。
 const BALANCE_STATUSES = ["imbalanced", "balanced"];
