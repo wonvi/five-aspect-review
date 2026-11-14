@@ -1,0 +1,7 @@
+{
+  "expected": "这个要问医生，我只能帮你安排时间和精力",
+  "feedback_r": "medical",
+  "input": {
+    "medical_in_dialogue": true
+  }
+}

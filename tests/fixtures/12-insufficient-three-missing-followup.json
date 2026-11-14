@@ -1,0 +1,66 @@
+{
+  "expected": "【摘要】\n要点一\n要点二\n要点三\n【注意事项】\n无\n—— 以上为通用分析 ——\n【一句话诊断】\n信息不足，缺做大、落地、立规矩\n【五维状态】\n开拓 · 5 分 · 材料 · 有证据\n　　expand指标：expand 的原话（材料）→ 5 分\n做大 · 未打分 · 缺做大证据\n落地 · 未打分 · 缺落地证据\n立规矩 · 未打分 · 缺立规矩证据\n家底 · 4 分 · 材料 · 有证据\n　　foundation指标：foundation 的原话（材料）→ 4 分\n【风险信号】\n未判定\n【风险应对】\n未判定\n【优化提升】\n未判定\n【重点关注】\n未判定\n【行动优先级】\n未判定\n【还想问你】\n你在把什么做大？\n什么已经落地、稳定产出了？",
+  "feedback_r": "insufficient",
+  "input": {
+    "cautions": [],
+    "critical_candidates": [],
+    "dimensions": [
+      {
+        "indicators": [
+          {
+            "name": "expand指标",
+            "score": 5,
+            "source": "material",
+            "value": "expand 的原话"
+          }
+        ],
+        "key": "expand",
+        "reason": "有证据"
+      },
+      {
+        "indicators": [],
+        "key": "grow",
+        "reason": "缺做大证据"
+      },
+      {
+        "indicators": [],
+        "key": "earn",
+        "reason": "缺落地证据"
+      },
+      {
+        "indicators": [],
+        "key": "govern",
+        "reason": "缺立规矩证据"
+      },
+      {
+        "indicators": [
+          {
+            "name": "foundation指标",
+            "score": 4,
+            "source": "material",
+            "value": "foundation 的原话"
+          }
+        ],
+        "key": "foundation",
+        "reason": "有证据"
+      }
+    ],
+    "energy_topic": false,
+    "follow_up": [
+      "你在把什么做大？",
+      "什么已经落地、稳定产出了？"
+    ],
+    "material_medical_skipped": false,
+    "medical_in_dialogue": false,
+    "outer": "up",
+    "problems": [
+      "不该出现"
+    ],
+    "scenario": "project",
+    "summary": [
+      "要点一",
+      "要点二",
+      "要点三"
+    ]
+  }
+}

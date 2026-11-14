@@ -1,0 +1,94 @@
+{
+  "expected": "【摘要】\n要点一\n要点二\n要点三\n【注意事项】\n无\n—— 以上为通用分析 ——\n【一句话诊断】\n失衡：最强是做大，最弱是开拓\n【五维状态】\n开拓 · 1 分 · 材料 · 有证据\n　　研发投入：研发占比 1%（材料）→ 1 分\n　　新方向：一年没有新方向（材料）→ 1 分\n做大 · 10 分 · 材料 · 有证据\n　　收入增速：月增 50%（材料）→ 10 分\n　　渠道数：多渠道并进（材料）→ 10 分\n落地 · 5 分 · 材料 · 有证据\n　　earn指标：earn 的原话（材料）→ 5 分\n立规矩 · 5 分 · 材料 · 有证据\n　　govern指标：govern 的原话（材料）→ 5 分\n家底 · 5 分 · 材料 · 有证据\n　　foundation指标：foundation 的原话（材料）→ 5 分\n【可能存在的问题】\n无\n【风险信号】\n做大正在压立规矩\n【风险应对】\n定投放和扩张的上限，看存量能撑几轮 同时：每扩一档就补一条规则；新人配带教\n【优化提升】\n先把存量算清、留出余量，有底了才敢试 外部：找做过类似探索的人聊三次；接一个外部合作项目当试验场\n【重点关注】\n做大（10 分）和立规矩（5 分）差 5 分\n【行动优先级】\n1. 先补开拓，做法见「优化提升」\n2. 再管住做大，做法见「风险应对」\n3. 增长的东西要开始留住、开始赚\n【哪条判断不对？】\n哪条判断不对，直接告诉我，我按你说的改。",
+  "feedback_r": "imbalanced.grow.expand",
+  "input": {
+    "cautions": [],
+    "critical_candidates": [],
+    "dimensions": [
+      {
+        "indicators": [
+          {
+            "name": "研发投入",
+            "score": 1,
+            "source": "material",
+            "value": "研发占比 1%"
+          },
+          {
+            "name": "新方向",
+            "score": 1,
+            "source": "material",
+            "value": "一年没有新方向"
+          }
+        ],
+        "key": "expand",
+        "reason": "有证据"
+      },
+      {
+        "indicators": [
+          {
+            "name": "收入增速",
+            "score": 10,
+            "source": "material",
+            "value": "月增 50%"
+          },
+          {
+            "name": "渠道数",
+            "score": 10,
+            "source": "material",
+            "value": "多渠道并进"
+          }
+        ],
+        "key": "grow",
+        "reason": "有证据"
+      },
+      {
+        "indicators": [
+          {
+            "name": "earn指标",
+            "score": 5,
+            "source": "material",
+            "value": "earn 的原话"
+          }
+        ],
+        "key": "earn",
+        "reason": "有证据"
+      },
+      {
+        "indicators": [
+          {
+            "name": "govern指标",
+            "score": 5,
+            "source": "material",
+            "value": "govern 的原话"
+          }
+        ],
+        "key": "govern",
+        "reason": "有证据"
+      },
+      {
+        "indicators": [
+          {
+            "name": "foundation指标",
+            "score": 5,
+            "source": "material",
+            "value": "foundation 的原话"
+          }
+        ],
+        "key": "foundation",
+        "reason": "有证据"
+      }
+    ],
+    "energy_topic": false,
+    "follow_up": [],
+    "material_medical_skipped": false,
+    "medical_in_dialogue": false,
+    "outer": "flat",
+    "problems": [],
+    "scenario": "project",
+    "summary": [
+      "要点一",
+      "要点二",
+      "要点三"
+    ]
+  }
+}

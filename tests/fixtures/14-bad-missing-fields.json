@@ -1,0 +1,13 @@
+{
+  "expected": "这次没分析出来。怎么办：换个说法再说一遍，或把材料贴全",
+  "input": {
+    "scenario": "project",
+    "summary": [
+      "一",
+      "二",
+      "三"
+    ]
+  },
+  "invalid": true,
+  "stderr_includes": ["cautions"]
+}

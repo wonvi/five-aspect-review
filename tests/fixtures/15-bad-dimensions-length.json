@@ -1,0 +1,71 @@
+{
+  "expected": "这次没分析出来。怎么办：换个说法再说一遍，或把材料贴全",
+  "input": {
+    "cautions": [],
+    "critical_candidates": [],
+    "dimensions": [
+      {
+        "indicators": [
+          {
+            "name": "expand指标",
+            "score": 5,
+            "source": "material",
+            "value": "expand 的原话"
+          }
+        ],
+        "key": "expand",
+        "reason": "有证据"
+      },
+      {
+        "indicators": [
+          {
+            "name": "grow指标",
+            "score": 5,
+            "source": "material",
+            "value": "grow 的原话"
+          }
+        ],
+        "key": "grow",
+        "reason": "有证据"
+      },
+      {
+        "indicators": [
+          {
+            "name": "earn指标",
+            "score": 5,
+            "source": "material",
+            "value": "earn 的原话"
+          }
+        ],
+        "key": "earn",
+        "reason": "有证据"
+      },
+      {
+        "indicators": [
+          {
+            "name": "govern指标",
+            "score": 5,
+            "source": "material",
+            "value": "govern 的原话"
+          }
+        ],
+        "key": "govern",
+        "reason": "有证据"
+      }
+    ],
+    "energy_topic": false,
+    "follow_up": [],
+    "material_medical_skipped": false,
+    "medical_in_dialogue": false,
+    "outer": "up",
+    "problems": [],
+    "scenario": "project",
+    "summary": [
+      "要点一",
+      "要点二",
+      "要点三"
+    ]
+  },
+  "invalid": true,
+  "stderr_includes": ["dimensions"]
+}
