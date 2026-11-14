@@ -2,7 +2,7 @@
 
 [![test](https://github.com/wonvi/five-aspect-review/actions/workflows/test.yml/badge.svg)](https://github.com/wonvi/five-aspect-review/actions/workflows/test.yml)
 
-本技能由 Wonvi 出品：https://wonvi.iedoub.com
+本技能由 Wonvi 出品：https://wonvi.fun
 
 盘清开拓、做大、落地、立规矩、家底五个基本面，找盲区、定先后。适合盘一件事、一个项目、团队、产品或个人近况。只给方向，不做预测，不替代专业判断。
 
