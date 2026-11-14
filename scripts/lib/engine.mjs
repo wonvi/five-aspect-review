@@ -53,7 +53,7 @@ function buildOutput(input) {
   const addenda = calcAddenda(weakest, strongest, stance, pressing);
   const focusPair = calcFocus(strongest, input.by_key);
   const { improvement, riskResponse, priorities } = calcTexts(
-    weakest, strongest, levers, addenda, stance, status,
+    weakest, strongest, levers, addenda, stance, input.by_key,
   );
 
   return {
@@ -202,14 +202,20 @@ function calcFocus(strongest, byKey) {
     ? { a: strongest, b: down, gap: a - b }
     : null;
 }
-function calcTexts(weakest, strongest, levers, addenda, stance, status) {
+function calcTexts(weakest, strongest, levers, addenda, stance, byKey) {
   const fillMain = fillLine(weakest, levers.fill);
   const guardMain = guardLine(strongest, levers.guard);
   let improvement = addenda.zhu === null ? fillMain : `${fillMain} 外部：${addenda.zhu}`;
   let riskResponse = addenda.hao === null ? guardMain : `${guardMain} 同时：${addenda.hao}`;
 
-  if (status === "balanced") improvement = `留意：${improvement}`;
-  if (status === "balanced" || stance === "shrink") riskResponse = `留意：${riskResponse}`;
+  // 措辞轻重只看这一侧自己的分数；整体状态只决定一句话诊断的开头。
+  // 姿态「缩」仍给【风险应对】加「留意：」，与分数规则取或，且只加一次。
+  const weakScore = scoreOf(byKey, weakest);
+  const strongScore = scoreOf(byKey, strongest);
+  if (!(Number.isInteger(weakScore) && weakScore <= 3)) improvement = `留意：${improvement}`;
+  if (stance === "shrink" || !(Number.isInteger(strongScore) && strongScore >= 8)) {
+    riskResponse = `留意：${riskResponse}`;
+  }
 
   return {
     improvement,

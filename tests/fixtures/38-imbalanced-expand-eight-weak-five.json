@@ -1,0 +1,82 @@
+{
+  "expected": "【摘要】\n新方向开得多\n增长持平\n存量尚可\n【注意事项】\n无\n—— 以上为通用分析 ——\n【一句话诊断】\n失衡：最强是开拓，相对弱的是做大\n【总体姿态】\n外面机会多、自己也冲得猛，先收一下别扩\n【五维状态】\n开拓 · 8 分 · 材料 · 有证据\n　　新方向：同时开了三条新线（材料）→ 8 分\n做大 · 5 分 · 材料 · 有证据\n　　新增用户：新增用户持平（材料）→ 5 分\n落地 · 6 分 · 材料 · 有证据\n　　留存：次月留存 40%（材料）→ 6 分\n立规矩 · 5 分 · 材料 · 有证据\n　　职责分工：职责基本清楚（材料）→ 5 分\n家底 · 6 分 · 材料 · 有证据\n　　现金跑道：跑道 9 个月（材料）→ 6 分\n【可能存在的问题】\n无\n【风险信号】\n无\n【风险应对】\n定「同时最多开几条」；新线上马前过一道检查\n【优化提升】\n留意：先把要推的东西做出差异，有东西可说才推得动 外部：找渠道方或有受众的人合作首发；买一次投放测试\n【重点关注】\n没有特别紧张的一对\n【行动优先级】\n1. 先管住开拓，做法见「风险应对」\n2. 再留意做大，做法见「优化提升」\n3. 探索出来的东西，挑一个推出去验证\n【哪条判断不对？】\n哪条判断不对，直接告诉我，我按你说的改。",
+  "feedback_r": "imbalanced.expand.grow",
+  "input": {
+    "cautions": [],
+    "critical_candidates": [],
+    "dimensions": [
+      {
+        "indicators": [
+          {
+            "name": "新方向",
+            "score": 8,
+            "source": "material",
+            "value": "同时开了三条新线"
+          }
+        ],
+        "key": "expand",
+        "reason": "有证据"
+      },
+      {
+        "indicators": [
+          {
+            "name": "新增用户",
+            "score": 5,
+            "source": "material",
+            "value": "新增用户持平"
+          }
+        ],
+        "key": "grow",
+        "reason": "有证据"
+      },
+      {
+        "indicators": [
+          {
+            "name": "留存",
+            "score": 6,
+            "source": "material",
+            "value": "次月留存 40%"
+          }
+        ],
+        "key": "earn",
+        "reason": "有证据"
+      },
+      {
+        "indicators": [
+          {
+            "name": "职责分工",
+            "score": 5,
+            "source": "material",
+            "value": "职责基本清楚"
+          }
+        ],
+        "key": "govern",
+        "reason": "有证据"
+      },
+      {
+        "indicators": [
+          {
+            "name": "现金跑道",
+            "score": 6,
+            "source": "material",
+            "value": "跑道 9 个月"
+          }
+        ],
+        "key": "foundation",
+        "reason": "有证据"
+      }
+    ],
+    "energy_topic": false,
+    "follow_up": [],
+    "material_medical_skipped": false,
+    "medical_in_dialogue": false,
+    "outer": "up",
+    "problems": [],
+    "scenario": "project",
+    "summary": [
+      "新方向开得多",
+      "增长持平",
+      "存量尚可"
+    ]
+  }
+}

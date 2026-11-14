@@ -5,7 +5,7 @@ license: 版权所有 © 2026 Wonvi。允许个人免费安装和使用；未经
 metadata:
   author: Wonvi
   homepage: https://wonvi.iedoub.com
-  version: 1.2.1
+  version: 1.2.2
 ---
 
 # 五面盘点

@@ -86,9 +86,11 @@ function oneLiner(d) {
     return `${kind}：${scopeLabel(scores)}${flatQualifier(d.status, scores)}，看不出相对强弱`;
   }
 
-  return d.status === "balanced"
-    ? `均衡：相对强的是${name(d.strongest)}，相对弱的是${name(d.weakest)}`
-    : `失衡：最强是${name(d.strongest)}，最弱是${name(d.weakest)}`;
+  const byKey = Object.fromEntries(d.dimensions.map((dim) => [dim.key, dim]));
+  const strongLabel = byKey[d.strongest]?.score >= 8 ? "最强是" : "相对强的是";
+  const weakLabel = byKey[d.weakest]?.score <= 3 ? "最弱是" : "相对弱的是";
+
+  return `${kind}：${strongLabel}${name(d.strongest)}，${weakLabel}${name(d.weakest)}`;
 }
 function scopeLabel(scores) {
   return scores.length === 5 ? "五个方面" : "已评估的四个方面";
@@ -175,11 +177,21 @@ function priorityLines(d) {
     .map(([key, line], i) => `${i + 1}. ${priorityLine(key, line, i, d)}`);
 }
 // 指向「优化提升」「风险应对」的两条只留一句引用，避免把上面两节原文再抄一遍；next 原样保留
+// 动词同样只看该侧分数：最强 ≥ 8 才写「管住」，最弱 ≤ 3 才写「补」，否则降为「留意」。
 function priorityLine(key, line, index, d) {
   const prefix = index === 0 ? "先" : "再";
-  if (key === "fill") return `${prefix}补${name(d.weakest)}，做法见「优化提升」`;
-  if (key === "guard") return `${prefix}管住${name(d.strongest)}，做法见「风险应对」`;
+  if (key === "fill") {
+    const action = dimScore(d, d.weakest) <= 3 ? "补" : "留意";
+    return `${prefix}${action}${name(d.weakest)}，做法见「优化提升」`;
+  }
+  if (key === "guard") {
+    const action = dimScore(d, d.strongest) >= 8 ? "管住" : "留意";
+    return `${prefix}${action}${name(d.strongest)}，做法见「风险应对」`;
+  }
   return line;
+}
+function dimScore(d, key) {
+  return (d.dimensions ?? []).find((dim) => dim.key === key)?.score;
 }
 function followUpBlock(d) {
   const list = d.follow_up;
